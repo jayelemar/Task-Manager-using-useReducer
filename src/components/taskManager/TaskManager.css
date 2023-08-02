@@ -2,8 +2,9 @@ body {
     background-color: var(--color-primary);
     overflow: hidden;
     /* avoid min-height to prevent glitches on css animation */
-  }
-  form.form input {
+}
+
+form.form input {
     width: 73%;
   }
   .task {
