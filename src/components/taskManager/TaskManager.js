@@ -19,8 +19,10 @@ const TaskManager = () => {
                     <button className='--btn --btn-success --btn-block --p'>Save Task</button>
                 </form>
             </div>
-            
         </div>
+        <article className='--flex-center --my2'>
+            <div className='--width-500px --p'></div>
+        </article>
     </div>
     
   )
