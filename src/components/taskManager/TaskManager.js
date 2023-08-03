@@ -1,5 +1,6 @@
 import React from 'react'
 import './TaskManager.css'
+import Task from './Task'
 
 const TaskManager = () => {
   return (
@@ -20,8 +21,12 @@ const TaskManager = () => {
                 </form>
             </div>
         </div>
-        <article className='--flex-center --my2'>
-            <div className='--width-500px --p'></div>
+        <article className='--flex-center --my2' style={{flexDirection: 'column'}}>
+            <div className='--width-500px --p'>
+            <h2 className='--text-light'>Task List</h2>
+            <hr style={{backgroundColor: '#fff'}}/>
+            </div>
+            <Task />
         </article>
     </div>
     
