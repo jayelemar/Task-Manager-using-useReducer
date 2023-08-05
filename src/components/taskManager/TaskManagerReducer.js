@@ -6,7 +6,15 @@ import Alert from '../alert/Alert'
 import Confirm from '../confirm/Confirm'
 
 const taskReducer = (state, action) => {
-    
+    if (action.type === "EMPTY_FIELD") {
+        return {
+            ...state,
+            isAlertOpen: true,
+            alertContent:"Please enter name & date",
+            alertClass: 'danger'
+        }
+    } 
+    return state;
 };
 
 
@@ -39,7 +47,11 @@ const TaskManagerReducer = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        
+        if (!name || !date) {
+            dispatch({
+                type: "EMPTY_FIELD",
+            })
+        }
         
     };
 
@@ -55,11 +67,19 @@ const TaskManagerReducer = () => {
   
     };
 
+    const closeAlert = () => {
+        
+    };
+
   return (
     <div className='--bg-primary'>
-        {state.isAlertOpen && <Alert />}
-
-        {/* <Alert /> */}
+        {state.isAlertOpen && 
+            <Alert alertContent={state.alertContent} 
+                    alertClass={state.alertClass} 
+                    onCloseAlert={closeAlert} 
+            />
+        }
+        
         {/* <Confirm /> */}
         <h2 className='--text-center --text-light'>Task Manager using useReducer</h2>
         <div className='--flex-center --p'>
