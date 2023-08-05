@@ -1,19 +1,33 @@
-import React from 'react'
 import './TaskManager.css'
 import Task from './Task'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useReducer } from 'react'
 import useLocalStorage from 'use-local-storage'
 import Alert from '../alert/Alert'
 import Confirm from '../confirm/Confirm'
 
+const taskReducer = (state, action) => {
+    
+};
+
+
 const TaskManagerReducer = () => {
     const [name, setName] = useState("")
     const [date, setDate] = useState("")
-    // const [tasks, setTasks] = useState([])
+
     const [tasks, setTasks] = useLocalStorage("tasks", [])
 
-    const [taskID, setTaskID] = useState(null)
+    // const [taskID, setTaskID] = useState(null)
     const [isEditing, setIsEditing] = useState(false)
+
+    const initialState = {
+        tasks,
+        taskID: null,
+        isEditing: false,
+        isAlertOpen: false,
+        alertContent: "This is an alert",
+        alertClass:"success"
+    }
+    const [state, dispatch] = useReducer(taskReducer, initialState)
 
     const nameInputRef = useRef(null);
     
@@ -25,69 +39,28 @@ const TaskManagerReducer = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (!name && !date || !name || !date) {
-            alert("Please enter task name and date")
-        } else if(name && date && isEditing) {
-            setTasks(
-                tasks.map((task) => {
-                    if (task.id === taskID) {
-                        return {...task, name, date, isComplete: false}
-                    } else {
-                        return task;
-                    }
-                })
-            );
-            setName("");
-            setDate("");
-            setIsEditing(false)
-            setTaskID(null)
-        } else {
-            const newTask = {
-                id: Date.now(), 
-                name,
-                date,
-                isComplete: false
-            }
-            setTasks([...tasks, newTask])
-            setName("")
-            setDate("")
-        }
+        
+        
     };
 
     const editTask = (id) => {
-        // console.log(id)
-        const thisTask = tasks.find((task) => task.id === id)
-        setIsEditing(true)
-        setTaskID(id)
-        setName(thisTask.name);
-        setDate(thisTask.date);
+
     };
 
     const deleteTask = (id) => {
-        // console.log(id)
-        if(window.confirm("Delete this task") === true) {
-            const newTasks = tasks.filter((task) => task.id !== id);
-            setTasks(newTasks);
-        }
+
     };
 
     const completeTask = (id) => {
-        // console.log(id)
-        setTasks(
-            tasks.map((task) => {
-                if (task.id === id) {
-                    return {...task, isComplete: true}
-                } else {
-                    return task
-                }
-            })
-        )
+  
     };
 
   return (
     <div className='--bg-primary'>
+        {state.isAlertOpen && <Alert />}
+
         {/* <Alert /> */}
-        <Confirm />
+        {/* <Confirm /> */}
         <h2 className='--text-center --text-light'>Task Manager using useReducer</h2>
         <div className='--flex-center --p'>
             <div className='--card --width-500px --p --flex-center'>
