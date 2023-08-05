@@ -3,6 +3,8 @@ import './TaskManager.css'
 import Task from './Task'
 import { useState, useRef, useEffect } from 'react'
 import useLocalStorage from 'use-local-storage'
+import Alert from '../alert/Alert'
+import Confirm from '../confirm/Confirm'
 
 const TaskManagerReducer = () => {
     const [name, setName] = useState("")
@@ -84,6 +86,8 @@ const TaskManagerReducer = () => {
 
   return (
     <div className='--bg-primary'>
+        {/* <Alert /> */}
+        <Confirm />
         <h2 className='--text-center --text-light'>Task Manager using useReducer</h2>
         <div className='--flex-center --p'>
             <div className='--card --width-500px --p --flex-center'>
