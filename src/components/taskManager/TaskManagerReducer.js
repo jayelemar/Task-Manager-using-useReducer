@@ -14,6 +14,12 @@ const taskReducer = (state, action) => {
             alertClass: 'danger'
         }
     } 
+    if (action.type === "CLOSE_ALERT") {
+        return {
+            ...state, isAlertOpen: false
+        };
+    }
+
     return state;
 };
 
@@ -68,7 +74,9 @@ const TaskManagerReducer = () => {
     };
 
     const closeAlert = () => {
-        
+        dispatch({
+            type: "CLOSE_ALERT"
+        })
     };
 
   return (
