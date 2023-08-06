@@ -30,6 +30,17 @@ const taskReducer = (state, action) => {
             alertClass: "success"
         };
     }
+    if (action.type === "OPEN_EDIT_MODAL") {
+        // console.log(action.payload);
+        return {
+            ...state, 
+            taskID: action.payload,
+            isEditModalOpen: true,
+            modalTitle: "Edit Task",
+            modalMsg: "You are about to edit this task",
+            modalActionText: "Edit"
+        }
+    }
 
     return state;
 };
@@ -51,7 +62,7 @@ const TaskManagerReducer = () => {
         isAlertOpen: false,
         alertContent: "This is an alert",
         alertClass:"success",
-        isEditModalOpen: true,
+        isEditModalOpen: false,
         isDeleteModalOpen: false,
         modalTitle: "Delete Task",
         modalMsg: "You are to delete this task",
@@ -61,8 +72,6 @@ const TaskManagerReducer = () => {
 
     const nameInputRef = useRef(null);
     
-
-
     useEffect(() => {
         nameInputRef.current.focus()
     })
@@ -92,6 +101,13 @@ const TaskManagerReducer = () => {
         }
     };
 
+    const openEditModal = (id) => {
+        dispatch({
+            type: "OPEN_EDIT_MODAL",
+            payload: id
+        })
+    };
+
     const editTask = (id) => {
     };
 
@@ -109,6 +125,7 @@ const TaskManagerReducer = () => {
 
     const closeModal = () => {
     };
+
 
 
   return (
@@ -168,7 +185,7 @@ const TaskManagerReducer = () => {
                     {state.tasks.map((task) => {
                         return <Task key={task.id} 
                                     {...task} 
-                                    editTask={editTask} 
+                                    editTask={openEditModal} 
                                     deleteTask={deleteTask} 
                                     completeTask={completeTask}/>;
                     })}
