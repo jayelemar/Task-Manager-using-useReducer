@@ -51,6 +51,11 @@ const TaskManagerReducer = () => {
         isAlertOpen: false,
         alertContent: "This is an alert",
         alertClass:"success"
+        isEditModalOpen: false,
+        isDeleteModalOpen: false,
+        modalTitle: "Delete Task",
+        modalMsg: "You are to delete this task"
+        modalActionText: "OK"
     }
     const [state, dispatch] = useReducer(taskReducer, initialState)
 
