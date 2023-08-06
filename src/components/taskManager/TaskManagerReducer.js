@@ -44,7 +44,7 @@ const taskReducer = (state, action) => {
     if (action.type === "EDIT_TASK") {
         return {
             ...state,
-            isEditing: true
+            isEditing: true,
         }
     }
     if (action.type === "CLOSE_MODAL") {
@@ -53,6 +53,29 @@ const taskReducer = (state, action) => {
             isEditModalOpen: false
         }
     }
+    if (action.type === "UPDATE_TASK") {
+        console.log(action.payload)
+        const updatedTask = action.payload
+        const id = action.payload.id
+
+        // find task index
+        const taskIndex = state.tasks.findIndex((task) => {
+            return task.id === id
+        })
+        console.log(taskIndex)
+        // Replace the task by its index
+        if(taskIndex ==! -1) {
+            state.tasks[taskIndex] = updatedTask;
+        }
+        return {
+            ...state,
+            isEditing: false,
+            isAlertOpen:true,
+            alertContent: "Task Edited Successfully",
+            alertClass: "success"
+        }
+    }
+
 
     return state;
 };
@@ -96,6 +119,35 @@ const TaskManagerReducer = () => {
             })
         }
 
+        if (name && date && state.isEditing) {
+            const updatedTask = {
+                id: state.taskID,
+                name,
+                date,
+                isComplete: false,
+            }
+            dispatch({
+                type: "UPDATE_TASK",
+                payload: updatedTask
+            });
+            setName("");
+            setDate("");
+            setTasks(
+                tasks.map((task) => {
+                    if (task.id === updatedTask.id) {
+                        return {
+                            ...task,
+                            name,
+                            date,
+                            isComplete: false
+                        }
+                    } return task;
+                })
+                // [...tasks, newTask]
+                )
+            return;
+        }
+
         if (name && date) {
             const newTask = {
                 id: Date.now(),
@@ -132,7 +184,6 @@ const TaskManagerReducer = () => {
         setName(thisTask.name)
         setDate(thisTask.date)
         closeModal();
-
     };
 
     const deleteTask = (id) => {
@@ -195,7 +246,7 @@ const TaskManagerReducer = () => {
                             />
                     </div>
                     <button className='--btn --btn-success --btn-block --p'>
-                        {isEditing ? "Edit Task": 'Save Task'}
+                        {state.isEditing ? "Edit Task": 'Save Task'}
                     </button>
                 </form>
             </div>
