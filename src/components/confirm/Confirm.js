@@ -7,7 +7,7 @@ const Confirm = ({modalTitle, modalMsg, modalAction, modalActionText, onCloseMod
             <div className="confirm-modal">
                 <div className="header">
                     <span className='title'>{modalTitle}</span>
-                    <button className='close'>&times;</button>
+                    <button className='close' onClick={onCloseModal}>&times;</button>
                 </div>
                 <div className="content">
                     <p>{modalMsg}</p>

@@ -50,7 +50,8 @@ const taskReducer = (state, action) => {
     if (action.type === "CLOSE_MODAL") {
         return {
             ...state,
-            isEditModalOpen: false
+            isEditModalOpen: false,
+            isDeleteModalOpen:false
         }
     }
     if (action.type === "UPDATE_TASK") {
@@ -74,6 +75,18 @@ const taskReducer = (state, action) => {
             alertContent: "Task Edited Successfully",
             alertClass: "success"
         }
+    }
+    if (action.type === "OPEN_DELETE_MODAL") {
+        console.log(action.payload);
+        return {
+            ...state,
+            taskID: action.payload,
+            isDeleteModalOpen: true,
+            modalTitle: "Delete Task",
+            modalMsg: "You are about to delete a task",
+            modalActionText: "Delete"
+        }
+        
     }
 
 
@@ -186,7 +199,15 @@ const TaskManagerReducer = () => {
         closeModal();
     };
 
-    const deleteTask = (id) => {
+    const openDeleteModal = (id) => {
+        dispatch({
+            type: "OPEN_DELETE_MODAL",
+            payload: id
+        })
+    };
+
+    const deleteTask = () => {
+
     };
 
     const completeTask = (id) => {
@@ -220,6 +241,13 @@ const TaskManagerReducer = () => {
                                             modalAction={editTask} 
                                             onCloseModal={closeModal} 
                                             />
+        }
+        {state.isDeleteModalOpen && <Confirm modalTitle={state.modalTitle} 
+                                            modalMsg={state.modalMsg} 
+                                            modalActionText={state.modalActionText} 
+                                            modalAction={deleteTask} 
+                                            onCloseModal={closeModal} 
+                                            /> 
         }
         <h2 className='--text-center --text-light'>Task Manager using useReducer</h2>
         <div className='--flex-center --p'>
@@ -264,7 +292,7 @@ const TaskManagerReducer = () => {
                         return <Task key={task.id} 
                                     {...task} 
                                     editTask={openEditModal} 
-                                    deleteTask={deleteTask} 
+                                    deleteTask={openDeleteModal} 
                                     completeTask={completeTask}/>;
                     })}
                 </div>
