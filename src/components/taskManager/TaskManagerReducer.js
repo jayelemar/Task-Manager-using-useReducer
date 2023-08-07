@@ -88,6 +88,19 @@ const taskReducer = (state, action) => {
         }
         
     }
+    if (action.type === "DELETE_TASK") {
+        // console.log(action.payload);
+        const id = action.payload;
+        const newTasks = state.tasks.filter((task) => task.id !== id)
+        return {
+            ...state,
+            tasks: newTasks,
+            isAlertOpen:true,
+            alertContent: "Task Deleted Successfully",
+            alertClass: "success",
+            isDeleteModalOpen: false
+        }
+    }
 
 
     return state;
@@ -207,7 +220,14 @@ const TaskManagerReducer = () => {
     };
 
     const deleteTask = () => {
-
+        // console.log(state.taskID);
+        const id = state.taskID;
+        dispatch({
+            type: "DELETE_TASK",
+            payload: id
+        });
+        const newTasks = tasks.filter((task) => task.id !== id)
+        setTasks(newTasks);
     };
 
     const completeTask = (id) => {
