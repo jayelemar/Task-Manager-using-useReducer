@@ -101,6 +101,29 @@ const taskReducer = (state, action) => {
             isDeleteModalOpen: false
         }
     }
+    if (action.type === "COMPLETE_TASK") {
+        // console.log(action.payload);
+        const id = action.payload;
+        const taskIndex = state.tasks.findIndex((task) => {
+            return task.id === id
+        });
+        let updatedTask = {
+            id,
+            name: state.tasks[taskIndex].name,
+            date: state.tasks[taskIndex].date,
+            isComplete: true,
+        }
+        if (taskIndex !== -1) {
+            state.tasks[taskIndex] = updatedTask
+        }
+        return {
+            ...state,
+            isAlertOpen: true,
+            alertContent: "Task Completed",
+            alertClass:"success",
+        }
+
+    }
 
 
     return state;
@@ -231,6 +254,21 @@ const TaskManagerReducer = () => {
     };
 
     const completeTask = (id) => {
+        dispatch({
+            type: "COMPLETE_TASK",
+            payload: id,
+        })
+        setTasks(
+            tasks.map((task) => {
+                if(task.id === id) {
+                    return{
+                        ...tasks,
+                        isComplete: true
+                    }
+                }
+                return task
+            })
+        )
     };
 
     const closeAlert = () => {
